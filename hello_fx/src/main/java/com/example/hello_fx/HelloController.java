@@ -24,6 +24,7 @@ public class HelloController {
 
     @FXML
     void onSave(ActionEvent event) {
+        System.out.println("save");
 
     }
 
