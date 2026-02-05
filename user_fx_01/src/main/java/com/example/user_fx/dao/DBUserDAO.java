@@ -15,7 +15,16 @@ public class DBUserDAO implements UserDAO{
     private DBConnect db = new DBConnect();
     @Override
     public boolean save(User newUser) {
-        return false;
+        try {
+            Connection con = db.connection();
+            PreparedStatement ps = con.prepareStatement("INSERT INTO user (username) VALUES (?)");
+            ps.setString(1,newUser.getUsername());//1== 1.Fragezeichen
+            int n=  ps.executeUpdate(); //insert, delete, update
+           return n==1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override

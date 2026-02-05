@@ -6,6 +6,5 @@
 
 ## Aufgabe
 
-1. nach Username-Eingabe und Save  soll in der Tabelle der neue User erscheinen
-   id soll hochgezählt werden.
-2. Zusatz: Über einen Delete-Button soll ein markierter User gelöscht werden können
+
+1. Delete soll mit Datenbank funktionieren

@@ -32,7 +32,8 @@ public class UserController {
         User u = new User( usernameField.getText() );
 
       //  tableView.getItems().add(u);
-
+        dao.save(u);
+        tableView.getItems().setAll(dao.findAll());// refresh TableView
     }
 
     @FXML
@@ -41,7 +42,7 @@ public class UserController {
 //        tableView.getItems().add(new User(++count,"ina"));
 
 
-        tableView.getItems().setAll(dao.findAll());
+        tableView.getItems().setAll(dao.findAll());// refresh
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
