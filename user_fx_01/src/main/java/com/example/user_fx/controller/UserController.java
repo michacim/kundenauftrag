@@ -3,19 +3,21 @@ package com.example.user_fx.controller;
 import com.example.user_fx.dao.DBUserDAO;
 import com.example.user_fx.dao.UserDAO;
 import com.example.user_fx.model.User;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserController {
-
     private UserDAO dao = new DBUserDAO();
+    @FXML
+    private TextField searchField;
 
-    //static int count =0;
     @FXML
     private TableView<User> tableView;
 
@@ -33,6 +35,7 @@ public class UserController {
         System.out.println("save");
         User u = new User( usernameField.getText() );
         dao.save(u);
+
         tableView.getItems().setAll(dao.findAll());// refresh TableView
     }
 
@@ -63,6 +66,14 @@ public class UserController {
         });
         cm.getItems().add(deleteItem);
         tableView.setContextMenu(cm);
+
+
     }
 
+    @FXML
+    void onSearch(ActionEvent actionEvent) {
+        User user=  dao.findByUsername(searchField.getText());
+        tableView.getItems().clear();
+        tableView.getItems().add(user);
+    }
 }

@@ -15,14 +15,14 @@ public class DBUserDAO implements UserDAO{
         try {
             Connection con = db.connection();
 
-            PreparedStatement ps = con.prepareStatement("INSERT INTO user (username) VALUES (?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO user (username,email) VALUES (?)");
             ps.setString(1,newUser.getUsername());//1== 1.Fragezeichen
+
             int n=  ps.executeUpdate(); //insert, delete, update
            return n==1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -32,25 +32,21 @@ public class DBUserDAO implements UserDAO{
             PreparedStatement ps = con.prepareStatement("DELETE FROM user WHERE id=?");
             ps.setInt(1,id);
             int n = ps.executeUpdate();
-
             return n==1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
     public List<User> findAll() {
         ArrayList<User> users = new ArrayList<>();
-
         try {
             Connection con = db.connection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM user");
             ResultSet rs =  ps.executeQuery();
 
             while(rs.next()){
-
                 int id = rs.getInt("id");
                 String username = rs.getString("username");
                 System.out.println(id);
@@ -60,5 +56,11 @@ public class DBUserDAO implements UserDAO{
             throw new RuntimeException(e);
         }
         return users;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        //FIXME implementieren!
+        return null;
     }
 }

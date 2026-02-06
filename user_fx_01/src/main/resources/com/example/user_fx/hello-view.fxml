@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.user_fx.controller.UserController">
    <center>
@@ -18,11 +18,21 @@
       </TableView>
    </center>
    <top>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <items>
-            <TextField fx:id="usernameField" />
-          <Button mnemonicParsing="false" onAction="#onSave" text="Save" />
-        </items>
-      </ToolBar>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                  <TextField fx:id="usernameField" promptText="Username" />
+                <Button mnemonicParsing="false" onAction="#onSave" text="Save" />
+              </items>
+            </ToolBar>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                  <TextField fx:id="searchField" promptText="Username" onAction="#onSearch"/>
+                <Button mnemonicParsing="false" onAction="#onSearch" text="Search" />
+              </items>
+            </ToolBar>
+         </children>
+      </VBox>
    </top>
 </BorderPane>
