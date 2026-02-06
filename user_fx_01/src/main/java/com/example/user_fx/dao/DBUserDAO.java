@@ -3,10 +3,7 @@ package com.example.user_fx.dao;
 import com.example.user_fx.db.DBConnect;
 import com.example.user_fx.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +14,7 @@ public class DBUserDAO implements UserDAO{
     public boolean save(User newUser) {
         try {
             Connection con = db.connection();
+
             PreparedStatement ps = con.prepareStatement("INSERT INTO user (username) VALUES (?)");
             ps.setString(1,newUser.getUsername());//1== 1.Fragezeichen
             int n=  ps.executeUpdate(); //insert, delete, update
@@ -29,7 +27,17 @@ public class DBUserDAO implements UserDAO{
 
     @Override
     public boolean delete(int id) {
-        return false;
+        try {
+            Connection con = db.connection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM user WHERE id=?");
+            ps.setInt(1,id);
+            int n = ps.executeUpdate();
+
+            return n==1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override

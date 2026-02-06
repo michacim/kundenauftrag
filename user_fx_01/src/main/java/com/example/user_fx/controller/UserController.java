@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserController {
 
     private UserDAO dao = new DBUserDAO();
@@ -15,7 +18,6 @@ public class UserController {
     //static int count =0;
     @FXML
     private TableView<User> tableView;
-
 
     @FXML
     private TableColumn<User, Integer> idCol;
@@ -30,23 +32,20 @@ public class UserController {
     void onSave(ActionEvent event) {
         System.out.println("save");
         User u = new User( usernameField.getText() );
-
-      //  tableView.getItems().add(u);
         dao.save(u);
         tableView.getItems().setAll(dao.findAll());// refresh TableView
     }
 
     @FXML
     void initialize(){
-//        tableView.getItems().add(new User(++count,"max"));
-//        tableView.getItems().add(new User(++count,"ina"));
-
-
         tableView.getItems().setAll(dao.findAll());// refresh
-
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
 
+        createContextMenu();
+    }
+
+    private void createContextMenu() {
         /////////// Contextmenu /////////////////////////
         ContextMenu cm = new ContextMenu();
         MenuItem deleteItem =new MenuItem("Delete");
@@ -54,6 +53,11 @@ public class UserController {
         deleteItem.setOnAction(event -> {
             System.out.println("delete");
             User deletedUser = tableView.getSelectionModel().getSelectedItem();
+            System.out.println(deletedUser);
+            boolean deleted= dao.delete(deletedUser.getId());
+            if(deleted) {
+                tableView.getItems().setAll(dao.findAll());// refresh TableView
+            }
 //            tableView.getItems().remove(deletedUser);
 //            System.out.println(tableView.getItems());
         });
