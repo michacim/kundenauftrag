@@ -26,13 +26,20 @@
                 <Button mnemonicParsing="false" onAction="#onSave" text="Save" />
               </items>
             </ToolBar>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <ToolBar prefHeight="40.0" prefWidth="200.0" visible="false">
               <items>
-                  <TextField fx:id="searchField" promptText="Username" onAction="#onSearch"/>
+                  <TextField fx:id="searchField" onAction="#onSearch" promptText="Username" />
                 <Button mnemonicParsing="false" onAction="#onSearch" text="Search" />
               </items>
             </ToolBar>
          </children>
+
+
+          <!--
+
+
+
+          -->
       </VBox>
    </top>
 </BorderPane>
