@@ -37,7 +37,7 @@
                      <children>
                         <TextField fx:id="nameField" layoutX="117.0" layoutY="60.0" promptText="Name" />
                         <TextField fx:id="dozentField" layoutX="117.0" layoutY="158.0" promptText="Dozent" />
-                        <TextField fx:id="wochenField" layoutX="117.0" layoutY="213.0" promptText="Wochen" />
+                        <TextField fx:id="wochenField" layoutX="117.0" layoutY="213.0" promptText="Wochen" text="1" />
                         <DatePicker fx:id="startdateField" layoutX="117.0" layoutY="107.0" promptText="Startdatum" />
                         <Button layoutX="279.0" layoutY="282.0" mnemonicParsing="false" onAction="#onSave" text="Save" />
                      </children>

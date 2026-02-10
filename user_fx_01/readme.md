@@ -8,3 +8,8 @@
 
 
 1. Delete soll mit Datenbank funktionieren
+
+
+## Ideen
+
+* Default Kurs-Länge, Startdatum(Aktuelles Datum)

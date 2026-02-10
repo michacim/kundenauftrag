@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `kurs` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL, --
   `name` varchar(20) NOT NULL,
-  `kursbeginn` date NOT NULL,
+  `kursbeginn` date NOT NULL, --
   `dozentname` varchar(50) NOT NULL,
   `wochen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
