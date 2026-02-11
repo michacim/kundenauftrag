@@ -69,6 +69,11 @@ public class KursDAOImpl implements KursDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+       
+    }
 
+    @Override
+    public Kurs findByKursname(String kursname) {
+        return null;
     }
 }
