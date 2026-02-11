@@ -97,4 +97,11 @@ public class KursDAOImpl implements KursDAO{
         }
         return courses;
     }
+
+    @Override
+    public boolean update(Kurs updateKurs) {
+
+
+        return false;
+    }
 }

@@ -3,7 +3,7 @@
 
 ## Aufgaben
 
-* Kurs suchen nach Kursname
+~~* Kurs suchen nach Kursname~~
 
 
 ## Ideen

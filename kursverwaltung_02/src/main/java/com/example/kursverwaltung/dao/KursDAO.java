@@ -11,4 +11,7 @@ public interface KursDAO {
     boolean deleteById(int id);
 
     List<Kurs> findByKursname(String kursname);
+
+
+    boolean update(Kurs  updateKurs);
 }

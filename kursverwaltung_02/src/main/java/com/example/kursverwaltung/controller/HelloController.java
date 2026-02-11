@@ -18,11 +18,14 @@ import java.util.List;
 
 public class HelloController {
 
+
     private KursDAO dao;// new KursDAOImpl();
 
 
     // --------- FX ----------------------------------
 
+    @FXML
+    public TabPane tabPane;
     @FXML
     private TextField searchField;
     // ---------- Member ---------------------
@@ -50,6 +53,7 @@ public class HelloController {
     private TextField wochenField;
     @FXML
     private TextField dozentField;
+    private boolean updateMode;
 
     @FXML
     void onSave(ActionEvent event) {
@@ -63,6 +67,9 @@ public class HelloController {
                 //TODO refresh TableView
                 System.out.println("saved: "+k);
                 kursTable.getItems().setAll(dao.findAll());//refresh
+                resetSaveFields();
+
+
             }
         }catch (DuplicateKeyException e){
             alert(e,"Kursname schon vergeben!").show();
@@ -77,6 +84,13 @@ public class HelloController {
         }
 
 
+    }
+
+    private void resetSaveFields() {
+        dozentField.clear();
+        nameField.clear();
+        wochenField.setText("1");
+        startdateField.setValue(null);
     }
 
     @FXML
@@ -124,7 +138,15 @@ public class HelloController {
            }
         } );
 
-        cm.getItems().add(deleteItem);
+        var updateItem = new MenuItem("Update");
+        updateItem.setOnAction(event -> {
+            System.out.println("update");
+            updateMode =true;
+            //show update window
+            tabPane.getSelectionModel().select(1);
+        });
+
+        cm.getItems().addAll(deleteItem,updateItem);
         kursTable.setContextMenu(cm);
 
     }
