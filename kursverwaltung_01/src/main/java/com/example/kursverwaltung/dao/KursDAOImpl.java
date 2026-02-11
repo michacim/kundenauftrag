@@ -27,9 +27,10 @@ public class KursDAOImpl implements KursDAO{
            int n=ps.executeUpdate();
            return n==1;
 
-        } catch (SQLException e){
-            //throw new DuplicateKeyException();
-            throw new RuntimeException("DUPLICATE_KEY");
+        } catch (SQLIntegrityConstraintViolationException e){
+            System.out.println(">>>>"+e);
+            //throw new ();
+            throw new DuplicateKeyException("Kursname schon vorhanden!");
         } catch (Exception e){
             throw new RuntimeException("");
         }

@@ -10,13 +10,21 @@ public class DBConnect {
 
 
     public DBConnect() {
+
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_kurse", "root", "");
-            System.out.println("Datenbank connect...");
 
+            System.out.println("Datenbank connect...");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+
+            System.out.println("Fehler");
+            throw new DBConnectionException("Keine Datenbank-Connection!");
+           // throw new RuntimeException(e);
         }
+
+
+
     }
 
     public Connection connection() {

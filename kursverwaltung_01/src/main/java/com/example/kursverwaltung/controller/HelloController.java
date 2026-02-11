@@ -1,8 +1,11 @@
 package com.example.kursverwaltung.controller;
 
+import com.example.kursverwaltung.dao.DuplicateKeyException;
 import com.example.kursverwaltung.dao.KursDAO;
 import com.example.kursverwaltung.dao.KursDAOImpl;
+import com.example.kursverwaltung.db.DBConnectionException;
 import com.example.kursverwaltung.model.Kurs;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,7 +17,7 @@ import java.time.LocalDate;
 public class HelloController {
 
     // ---------- Member ---------------------
-    private KursDAO dao = new KursDAOImpl();
+    private KursDAO dao;// new KursDAOImpl();
 
 
     // --------- FX ----------------------------------
@@ -57,13 +60,14 @@ public class HelloController {
                 System.out.println("saved: "+k);
                 kursTable.getItems().setAll(dao.findAll());//refresh
             }
-        } catch (Exception e) {
-            if(e.getMessage().equals("DUPLICATE_KEY")){
-                Alert al = new Alert(Alert.AlertType.ERROR);
-                al.setTitle("Fehler");
-                al.setContentText("Kursname schon vergeben!");
-                al.show();
-            }else if(e.getMessage().contains("\"date\" is null")){
+        }catch (DuplicateKeyException e){
+            Alert al = new Alert(Alert.AlertType.ERROR);
+            al.setTitle("Fehler");
+            al.setContentText("Kursname schon vergeben!");
+            al.show();
+        }
+        catch (Exception e) {
+           if(e.getMessage().contains("\"date\" is null")){
                 Alert al = new Alert(Alert.AlertType.ERROR);
                 al.setTitle("Fehler");
                 al.setContentText("Kein Datum gewählt!");
@@ -72,7 +76,6 @@ public class HelloController {
               e.printStackTrace();
             }
 
-
         }
 
 
@@ -80,14 +83,22 @@ public class HelloController {
 
     @FXML
     void initialize(){
-        //------------TableView config
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        beginnCol.setCellValueFactory(new PropertyValueFactory<>("courseStart"));
-        dozentCol.setCellValueFactory(new PropertyValueFactory<>("teacher"));
-        wochenCol.setCellValueFactory(new PropertyValueFactory<>("weeks"));
+        try {
+            dao = new KursDAOImpl();
+            //------------TableView config
+            nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+            beginnCol.setCellValueFactory(new PropertyValueFactory<>("courseStart"));
+            dozentCol.setCellValueFactory(new PropertyValueFactory<>("teacher"));
+            wochenCol.setCellValueFactory(new PropertyValueFactory<>("weeks"));
 
-
-        kursTable.getItems().setAll(dao.findAll());//refresh
+            kursTable.getItems().setAll(dao.findAll());//refresh
+        } catch (DBConnectionException e) {
+            Alert al = new Alert(Alert.AlertType.ERROR);
+            al.setTitle("Fehler!");
+            al.setContentText(e.getMessage() +"\nBitte Datenbankverbindung herstellen und Neustarten!");
+            al.showAndWait();
+            Platform.exit();
+        }
 
     }
 
