@@ -72,8 +72,29 @@ public class KursDAOImpl implements KursDAO{
        
     }
 
+
+
+    // Java1, Java2   ja
     @Override
-    public Kurs findByKursname(String kursname) {
-        return null;
+    public List<Kurs> findByKursname(String kursname) {
+        ArrayList<Kurs> courses = new ArrayList<>();
+        try {
+
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM kurs WHERE LOWER(name) LIKE ?");
+            ps.setString(1, "%"+kursname.toLowerCase()+"%");
+            ResultSet rs =  ps.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                LocalDate courseStart = rs.getDate("kursbeginn").toLocalDate();
+                String dozname = rs.getString("dozentname");
+                int weeks = rs.getInt("wochen");
+                courses.add(new Kurs(id,name,courseStart,dozname,weeks ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return courses;
     }
 }

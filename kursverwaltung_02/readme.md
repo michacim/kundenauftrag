@@ -4,3 +4,8 @@
 ## Aufgaben
 
 * Kurs suchen nach Kursname
+
+
+## Ideen
+
+* Voll-Suche (alle Felder berücksichtigen )

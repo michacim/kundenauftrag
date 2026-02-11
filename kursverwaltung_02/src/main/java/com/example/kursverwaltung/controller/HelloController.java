@@ -10,18 +10,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class HelloController {
 
-    // ---------- Member ---------------------
     private KursDAO dao;// new KursDAOImpl();
 
 
     // --------- FX ----------------------------------
 
+    @FXML
+    private TextField searchField;
+    // ---------- Member ---------------------
     @FXML
     private TableView<Kurs> kursTable;
     @FXML
@@ -128,5 +132,11 @@ public class HelloController {
     private boolean validate(){
         return false;
     }
+
+    @FXML
+    void onSearch(KeyEvent keyEvent) {
+        kursTable.getItems().setAll(dao.findByKursname(searchField.getText()));//
+    }
+
 
 }

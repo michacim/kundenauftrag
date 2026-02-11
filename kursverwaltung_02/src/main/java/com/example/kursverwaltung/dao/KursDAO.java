@@ -10,5 +10,5 @@ public interface KursDAO {
     List<Kurs> findAll();
     boolean deleteById(int id);
 
-    Kurs findByKursname(String kursname);
+    List<Kurs> findByKursname(String kursname);
 }

@@ -50,8 +50,7 @@
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <TextField promptText="Kursname" />
-          <Button mnemonicParsing="false" text="Suche" />
+            <TextField fx:id="searchField" onKeyTyped="#onSearch" promptText="Kursname" />
         </items>
       </ToolBar>
    </top>
