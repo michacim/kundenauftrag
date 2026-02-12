@@ -18,7 +18,7 @@ public class DBConnect {
         } catch (SQLException e) {
 
 
-            System.out.println("Fehler");
+            System.out.println("Fehler"+e);
             throw new DBConnectionException("Keine Datenbank-Connection!");
            // throw new RuntimeException(e);
         }

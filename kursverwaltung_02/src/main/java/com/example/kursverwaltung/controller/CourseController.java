@@ -16,12 +16,13 @@ import java.time.LocalDate;
 
 public class CourseController {
 
-
     private CourseDAO dao;// new CourseDAOImpl();
 
 
     // --------- FX ----------------------------------
 
+    @FXML
+    private Label modeLabel;
     @FXML
     public TabPane tabPane;
     @FXML
@@ -65,8 +66,10 @@ public class CourseController {
                 course.setId(kursTable.getSelectionModel().getSelectedItem().getId());
                 saved=  dao.update(course);
                 updateMode=false;
+                modeLabel.setText("Save");//FIXME
             }else{
                 saved= dao.save(course);
+
             }
 
             if(saved){
@@ -101,17 +104,17 @@ public class CourseController {
 
     @FXML
     void initialize(){
+        modeLabel.setText("Save");
         try {
             dao = new CourseDAOImpl();
             //------------TableView config
             setupTableView();
-
-
-
         } catch (DBConnectionException e) {
             alert(e,"\nBitte Datenbankverbindung herstellen und Neustarten!").showAndWait();
             Platform.exit();
         }
+
+
     }
 
     private static Alert alert(Exception e, String msg) {
@@ -148,6 +151,7 @@ public class CourseController {
         updateItem.setOnAction(event -> {
             System.out.println("update");
             updateMode =true;
+            modeLabel.setText("Update"); // FIXME dynamisch
             //TODO make updateMode visible
             Course updateKurs = kursTable.getSelectionModel().getSelectedItem();
             nameField.setText(updateKurs.getName());

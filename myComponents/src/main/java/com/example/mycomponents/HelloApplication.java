@@ -1,4 +1,4 @@
-package com.example.kursverwaltung;
+package com.example.mycomponents;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CourseApplication extends Application {
+public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setAlwaysOnTop(true);
-        FXMLLoader fxmlLoader = new FXMLLoader(CourseApplication.class.getResource("course-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
