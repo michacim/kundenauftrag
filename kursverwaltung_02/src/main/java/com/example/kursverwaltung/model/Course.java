@@ -2,7 +2,7 @@ package com.example.kursverwaltung.model;
 
 import java.time.LocalDate;
 
-public class Kurs {
+public class Course {
 
     private int id;
     private String name;
@@ -10,7 +10,7 @@ public class Kurs {
     private String teacher;
     private int weeks;
 
-    public Kurs(int id, String name, LocalDate courseStart, String teacher, int weeks) {
+    public Course(int id, String name, LocalDate courseStart, String teacher, int weeks) {
         this.id = id;
         this.name = name;
         this.courseStart = courseStart;
@@ -18,7 +18,7 @@ public class Kurs {
         this.weeks = weeks;
     }
 
-    public Kurs(String name, LocalDate courseStart, String teacher, int weeks) {
+    public Course(String name, LocalDate courseStart, String teacher, int weeks) {
         this.name = name;
         this.courseStart = courseStart;
         this.teacher = teacher;
@@ -67,7 +67,7 @@ public class Kurs {
 
     @Override
     public String toString() {
-        return "Kurs{" +
+        return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", courseStart=" + courseStart +

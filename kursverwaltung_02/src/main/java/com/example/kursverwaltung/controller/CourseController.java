@@ -1,10 +1,10 @@
 package com.example.kursverwaltung.controller;
 
 import com.example.kursverwaltung.dao.DuplicateKeyException;
-import com.example.kursverwaltung.dao.KursDAO;
-import com.example.kursverwaltung.dao.KursDAOImpl;
+import com.example.kursverwaltung.dao.CourseDAO;
+import com.example.kursverwaltung.dao.CourseDAOImpl;
 import com.example.kursverwaltung.db.DBConnectionException;
-import com.example.kursverwaltung.model.Kurs;
+import com.example.kursverwaltung.model.Course;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,14 +12,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
-import java.util.List;
 
-public class HelloController {
+public class CourseController {
 
 
-    private KursDAO dao;// new KursDAOImpl();
+    private CourseDAO dao;// new CourseDAOImpl();
 
 
     // --------- FX ----------------------------------
@@ -30,13 +28,13 @@ public class HelloController {
     private TextField searchField;
     // ---------- Member ---------------------
     @FXML
-    private TableView<Kurs> kursTable;
+    private TableView<Course> kursTable;
     @FXML
     private TableColumn<?, ?> nameCol;
     @FXML
-    private TableColumn<Kurs, LocalDate> beginnCol;
+    private TableColumn<Course, LocalDate> beginnCol;
     @FXML
-    private TableColumn<Kurs, String> dozentCol;
+    private TableColumn<Course, String> dozentCol;
     @FXML
     private TableColumn<?, ?> wochenCol;
 
@@ -53,22 +51,30 @@ public class HelloController {
     private TextField wochenField;
     @FXML
     private TextField dozentField;
+
     private boolean updateMode;
 
     @FXML
     void onSave(ActionEvent event) {
         System.out.println("save");
+        boolean saved = false;
         try {
-            Kurs k = new Kurs(nameField.getText(), startdateField.getValue(),dozentField.getText(),Integer.parseInt( wochenField.getText()));
+            Course course = new Course(nameField.getText(), startdateField.getValue(),dozentField.getText(),Integer.parseInt( wochenField.getText()));
             //TODO Pflichtfelder validieren
+            if(updateMode){
+                course.setId(kursTable.getSelectionModel().getSelectedItem().getId());
+                saved=  dao.update(course);
+                updateMode=false;
+            }else{
+                saved= dao.save(course);
+            }
 
-            boolean saved= dao.save(k);
             if(saved){
-                //TODO refresh TableView
-                System.out.println("saved: "+k);
+
+                System.out.println("saved: "+course);
                 kursTable.getItems().setAll(dao.findAll());//refresh
                 resetSaveFields();
-
+                tabPane.getSelectionModel().select(0);// go to TableView-Tab
 
             }
         }catch (DuplicateKeyException e){
@@ -96,7 +102,7 @@ public class HelloController {
     @FXML
     void initialize(){
         try {
-            dao = new KursDAOImpl();
+            dao = new CourseDAOImpl();
             //------------TableView config
             setupTableView();
 
@@ -142,7 +148,12 @@ public class HelloController {
         updateItem.setOnAction(event -> {
             System.out.println("update");
             updateMode =true;
-            //show update window
+            //TODO make updateMode visible
+            Course updateKurs = kursTable.getSelectionModel().getSelectedItem();
+            nameField.setText(updateKurs.getName());
+            dozentField.setText(updateKurs.getTeacher());
+            wochenField.setText(updateKurs.getWeeks()+"");
+            startdateField.setValue(updateKurs.getCourseStart());
             tabPane.getSelectionModel().select(1);
         });
 
@@ -151,6 +162,7 @@ public class HelloController {
 
     }
 
+    //TODO impl
     private boolean validate(){
         return false;
     }
