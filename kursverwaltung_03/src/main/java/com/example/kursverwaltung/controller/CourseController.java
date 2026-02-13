@@ -1,8 +1,6 @@
 package com.example.kursverwaltung.controller;
 
-import com.example.kursverwaltung.dao.DuplicateKeyException;
-import com.example.kursverwaltung.dao.CourseDAO;
-import com.example.kursverwaltung.dao.CourseDAOImpl;
+import com.example.kursverwaltung.dao.*;
 import com.example.kursverwaltung.db.DBConnectionException;
 import com.example.kursverwaltung.model.Course;
 import com.example.kursverwaltung.model.User;
@@ -42,7 +40,7 @@ public class CourseController {
     private TableColumn<?, ?> wochenCol;
 
 
-///// ----------  Save -----------------------------
+    /// // ----------  Save -----------------------------
 
     @FXML
     private TextField nameField;
@@ -62,34 +60,33 @@ public class CourseController {
         System.out.println("save");
         boolean saved = false;
         try {
-            Course course = new Course(nameField.getText(), startdateField.getValue(),dozentField.getText(),Integer.parseInt( wochenField.getText()));
+            Course course = new Course(nameField.getText(), startdateField.getValue(), dozentField.getText(), Integer.parseInt(wochenField.getText()));
             //TODO Pflichtfelder validieren
-            if(updateMode){
+            if (updateMode) {
                 course.setId(kursTable.getSelectionModel().getSelectedItem().getId());
-                saved=  dao.update(course);
-                updateMode=false;
+                saved = dao.update(course);
+                updateMode = false;
                 modeLabel.setText("Save");//FIXME
-            }else{
-                saved= dao.save(course);
+            } else {
+                saved = dao.save(course);
 
             }
 
-            if(saved){
+            if (saved) {
 
-                System.out.println("saved: "+course);
+                System.out.println("saved: " + course);
                 kursTable.getItems().setAll(dao.findAll());//refresh
                 resetSaveFields();
                 tabPane.getSelectionModel().select(0);// go to TableView-Tab
 
             }
-        }catch (DuplicateKeyException e){
-            alert(e,"Kursname schon vergeben!").show();
-        }
-        catch (Exception e) {
-           if(e.getMessage().contains("\"date\" is null")){
-                alert(e,"Kein Datum gewählt!").show();
-            }else{
-              e.printStackTrace();
+        } catch (DuplicateKeyException e) {
+            alert(e, "Kursname schon vergeben!").show();
+        } catch (Exception e) {
+            if (e.getMessage().contains("\"date\" is null")) {
+                alert(e, "Kein Datum gewählt!").show();
+            } else {
+                e.printStackTrace();
             }
 
         }
@@ -105,20 +102,28 @@ public class CourseController {
     }
 
     @FXML
-    void initialize(){
-        LoginDialog login = new LoginDialog();
+    void initialize() {
 
-       Optional<User> opt=  login.showAndWait();
-       User loginUser = opt.get();
-       //FIXME if username und password falsch dann return
-        // return
+        while(true) {
+            LoginDialog login = new LoginDialog();
+            UserDAO userDAO = new UserDAOImpl();
+            Optional<User> opt = login.showAndWait();
+            User loginUser = opt.get();
+            User validUser = userDAO.authenticate(loginUser.getUsername(), loginUser.getPassword());
+
+            if (validUser != null) {
+
+                break;
+            }
+        }
+
         modeLabel.setText("Save");
         try {
             dao = new CourseDAOImpl();
             //------------TableView config
             setupTableView();
         } catch (DBConnectionException e) {
-            alert(e,"\nBitte Datenbankverbindung herstellen und Neustarten!").showAndWait();
+            alert(e, "\nBitte Datenbankverbindung herstellen und Neustarten!").showAndWait();
             Platform.exit();
         }
 
@@ -128,7 +133,7 @@ public class CourseController {
     private static Alert alert(Exception e, String msg) {
         Alert al = new Alert(Alert.AlertType.ERROR);
         al.setTitle("Fehler!");
-        al.setContentText(e.getMessage() +msg);
+        al.setContentText(e.getMessage() + msg);
         return al;
     }
 
@@ -148,34 +153,34 @@ public class CourseController {
         var cm = new ContextMenu();
         var deleteItem = new MenuItem("Delete");
         deleteItem.setOnAction(e -> {
-           var k = kursTable.getSelectionModel().getSelectedItem();
-           var deleted =  dao.deleteById(k.getId());
-           if(deleted){
-               kursTable.getItems().setAll(dao.findAll());//refresh
-           }
-        } );
+            var k = kursTable.getSelectionModel().getSelectedItem();
+            var deleted = dao.deleteById(k.getId());
+            if (deleted) {
+                kursTable.getItems().setAll(dao.findAll());//refresh
+            }
+        });
 
         var updateItem = new MenuItem("Update");
         updateItem.setOnAction(event -> {
             System.out.println("update");
-            updateMode =true;
+            updateMode = true;
             modeLabel.setText("Update"); // FIXME dynamisch
             //TODO make updateMode visible
             Course updateKurs = kursTable.getSelectionModel().getSelectedItem();
             nameField.setText(updateKurs.getName());
             dozentField.setText(updateKurs.getTeacher());
-            wochenField.setText(updateKurs.getWeeks()+"");
+            wochenField.setText(updateKurs.getWeeks() + "");
             startdateField.setValue(updateKurs.getCourseStart());
             tabPane.getSelectionModel().select(1);
         });
 
-        cm.getItems().addAll(deleteItem,updateItem);
+        cm.getItems().addAll(deleteItem, updateItem);
         kursTable.setContextMenu(cm);
 
     }
 
     //TODO impl
-    private boolean validate(){
+    private boolean validate() {
         return false;
     }
 

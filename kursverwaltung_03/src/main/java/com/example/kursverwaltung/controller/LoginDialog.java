@@ -24,20 +24,17 @@ public class LoginDialog  extends Dialog<User> {
         grid.add(text2, 2, 2);
         getDialogPane().setContent(grid);
 
-        ButtonType buttonTypeOk = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeOk = new ButtonType("Login", ButtonBar.ButtonData.OK_DONE);
         getDialogPane().getButtonTypes().add(buttonTypeOk);
 
-        setResultConverter(new Callback<ButtonType, User>() {
-            @Override
-            public User call(ButtonType b) {
+        setResultConverter(b -> {
 
-                if (b == buttonTypeOk) {
+            if (b == buttonTypeOk) {
 
-                    return new User(text1.getText(), text2.getText());
-                }
-
-                return null;
+                return new User(text1.getText(), text2.getText());
             }
+
+            return null;
         });
     }
 }

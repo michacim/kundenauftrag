@@ -9,7 +9,7 @@
 * UserDAO:  
 * User findUser(Username)
 * boolean validUser(passwort)
-* CourseDAO anpassen
+* CourseDAO anpassen-> findAll
 
 
 ## Ideen
